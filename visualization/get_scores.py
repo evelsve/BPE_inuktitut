@@ -17,18 +17,21 @@ def load_file(file, valid=False):
             list_epoch.append(epoch)
     return list_loss, list_epoch
 
-def load_bleu(valid_file):
+def load_ppl(valid_file):
     with open(valid_file, 'r', encoding="utf8") as file:
         lines = file.readlines()
-        list_bleu = []
+        list_ppl = []
         list_epoch = []
         for line in lines:
             split = line.split()
+            # print(split)
             epoch = int(split[8].strip(":"))
-            bleu = float(split[25])
-            list_bleu.append(bleu)
+            # print(epoch)
+            ppl = float(split[22])
+            list_ppl.append(ppl)
+            # print(bleu)
             list_epoch.append(epoch)
-    return list_bleu, list_epoch
+    return list_ppl, list_epoch
 
 
 train_loss, train_epoch = load_file("score_training.txt")
@@ -42,8 +45,8 @@ plt.legend(["Training loss", "Validation loss"])
 plt.figure()
 
 
-bleu, epoch = load_bleu("score_validation.txt")
-plt.plot(epoch, bleu)
-plt.ylabel("BLEU")
+bleu, epoch = load_ppl("score_validation.txt")
+plt.plot(epoch, bleu, color='green')
+plt.ylabel("Perplexity")
 plt.xlabel("Epoch")
 plt.show()
